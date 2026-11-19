@@ -15,7 +15,7 @@ struct DemoView: View {
           Image(systemName: "iphone.gen3.radiowaves.left.and.right")
             .font(.system(size: 56)).foregroundStyle(warm ? .orange : .blue)
           VStack(spacing: 6) {
-            Text("A preview for every PR").font(.title2.bold())
+            Text("Your first PR preview").font(.title2.bold())
             Text("PR #\(pullRequest) · \(commit.prefix(7))").font(.system(.subheadline, design: .monospaced)).foregroundStyle(.secondary)
           }
           Text("\(count)").font(.system(size: 76, weight: .semibold, design: .rounded)).contentTransition(.numericText())
@@ -37,7 +37,7 @@ struct DemoView: View {
           Text("Built by GitHub Actions. Reviewed in your browser.")
             .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
         }.padding(28)
-      }.navigationTitle("Preview Demo").tint(warm ? .orange : .blue).onAppear { save() }
+      }.navigationTitle("PR Preview Test").tint(warm ? .orange : .blue).onAppear { save() }
     }
   }
   private func save() {
