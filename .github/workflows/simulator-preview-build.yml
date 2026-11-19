@@ -1,0 +1,33 @@
+name: Build Simulator Preview
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+concurrency:
+  group: simulator-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  build:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Build and package the simulator app
+        env:
+          PREVIEW_SHA: ${{ github.event.pull_request.head.sha }}
+          PREVIEW_PR: ${{ github.event.pull_request.number }}
+          PREVIEW_PROJECT: ${{ vars.PREVIEW_PROJECT }}
+          PREVIEW_WORKSPACE: ${{ vars.PREVIEW_WORKSPACE }}
+          PREVIEW_SCHEME: ${{ vars.PREVIEW_SCHEME }}
+        run: bash scripts/build-preview.sh
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: simulator-preview
+          path: example-build/app.tar
+          if-no-files-found: error
+          retention-days: 7

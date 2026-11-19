@@ -1,0 +1,8 @@
+# Replace the hostname, tunnel UUID and credentials path.
+# Keep the credentials JSON outside this repository.
+tunnel: YOUR-TUNNEL-UUID
+credentials-file: /Users/YOUR-USER/.cloudflared/YOUR-TUNNEL-UUID.json
+ingress:
+  - hostname: sim.example.com
+    service: http://127.0.0.1:8091
+  - service: http_status:404

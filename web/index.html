@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Simulator Preview" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>Simulator Preview</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <main>
+      <aside>
+        <section class="panel device-panel">
+          <div class="device-label">
+            <label for="device">Simulator</label>
+            <span id="device-runtime" aria-live="polite">Loading list…</span>
+          </div>
+          <div class="device-row">
+            <select
+              id="device"
+              aria-label="Simulator"
+              aria-describedby="device-runtime"
+              aria-busy="true"
+              disabled
+            >
+              <option value="">Loading simulators…</option>
+            </select>
+            <button
+              class="icon-button"
+              id="refresh"
+              aria-label="Refresh device list"
+              aria-controls="device"
+              title="Refresh device list"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 7v5h-5M4 17v-5h5" />
+                <path d="M6 7a7 7 0 0 1 12-1l2 6M4 12l2 6a7 7 0 0 0 12-1" />
+              </svg>
+            </button>
+            <button id="select-device" disabled>Connect</button>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="session-summary">
+            <div class="session-line">
+              <span class="dot" id="dot"></span
+              ><span id="connection">Connecting…</span>
+            </div>
+            <a
+              id="additional-workspace"
+              class="text-button"
+              target="_blank"
+              rel="noopener"
+              href="/"
+              aria-label="Open another session"
+              title="Open a separate simulator session"
+              >Another Session ↗</a
+            >
+          </div>
+          <p id="owner">Preparing the workspace</p>
+        </section>
+      </aside>
+      <div class="workspace">
+        <div class="workspace-heading">
+          <div>
+            <div class="section-label">LIVE PREVIEW</div>
+            <h2 id="device-name">Choose a simulator</h2>
+          </div>
+        </div>
+        <section class="stage" id="stage" aria-label="Simulator display">
+          <div id="screen-viewport" class="screen-viewport">
+            <video
+              id="screen"
+              autoplay
+              muted
+              playsinline
+              disablepictureinpicture
+              aria-label="Live simulator screen"
+            ></video>
+          </div>
+          <div
+            id="placeholder"
+            role="status"
+            aria-live="polite"
+            data-indicator="loading"
+          >
+            <div class="screen-symbol" aria-hidden="true">
+              <svg
+                class="status-icon"
+                data-icon="loading"
+                viewBox="0 0 24 24"
+                focusable="false"
+              >
+                <circle cx="12" cy="12" r="9" opacity="0.2" />
+                <path class="status-spinner" d="M12 3a9 9 0 0 1 9 9" />
+              </svg>
+              <svg
+                class="status-icon"
+                data-icon="warning"
+                viewBox="0 0 24 24"
+                focusable="false"
+              >
+                <path d="M12 3 22 21H2L12 3Z M12 9v5 M12 17v.5" />
+              </svg>
+              <svg
+                class="status-icon"
+                data-icon="play"
+                viewBox="0 0 24 24"
+                focusable="false"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="m10 8 6 4-6 4V8Z" />
+              </svg>
+              <svg
+                class="status-icon"
+                data-icon="idle"
+                viewBox="0 0 24 24"
+                focusable="false"
+              >
+                <rect x="3" y="7" width="14" height="14" rx="2" />
+                <path
+                  d="M7 7V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-2"
+                />
+              </svg>
+            </div>
+            <h3 id="placeholder-title">Connecting to your workspace</h3>
+            <p id="placeholder-detail">
+              The host Mac must be running Simulator Preview.
+            </p>
+            <button id="show-controls" type="button" hidden>
+              Show simulator controls
+            </button>
+            <button id="play-video" type="button" hidden>Play video</button>
+          </div>
+          <button
+            id="focus-menu"
+            class="stage-button"
+            type="button"
+            aria-label="Simulator menu"
+            title="Simulator menu"
+            aria-expanded="false"
+            aria-controls="focus-palette"
+            hidden
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="5" cy="12" r="1" />
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="19" cy="12" r="1" />
+            </svg>
+          </button>
+          <div id="focus-palette" hidden>
+            <button
+              id="palette-dismiss"
+              type="button"
+              tabindex="-1"
+              aria-label="Close simulator menu"
+            ></button>
+            <div
+              class="palette-actions"
+              role="group"
+              aria-label="Simulator controls"
+            >
+              <button
+                data-palette-action="home"
+                type="button"
+                aria-label="Home"
+                title="Home"
+                disabled
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9" />
+                </svg>
+              </button>
+              <button
+                data-palette-action="left"
+                type="button"
+                aria-label="Rotate left"
+                title="Rotate left"
+                disabled
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 4v6h6M3 10a9 9 0 1 1 1 8" />
+                </svg>
+              </button>
+              <button
+                data-palette-action="right"
+                type="button"
+                aria-label="Rotate right"
+                title="Rotate right"
+                disabled
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M21 4v6h-6m6 0a9 9 0 1 0-1 8" />
+                </svg>
+              </button>
+              <button
+                id="copy-display-info"
+                type="button"
+                aria-label="Copy display info"
+                title="Copy display info"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 11v6M12 7v1" />
+                </svg>
+              </button>
+              <button
+                id="palette-exit"
+                type="button"
+                aria-label="Exit full screen"
+                title="Exit full screen"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M9 3v6H3m12-6v6h6M3 15h6v6m6 0v-6h6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <button
+            id="exit-focus"
+            class="stage-button"
+            aria-label="Exit full screen"
+            title="Exit full screen"
+            hidden
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 3v6H3m12-6v6h6M3 15h6v6m6 0v-6h6" /></svg
+            ><span class="button-label">Exit full screen</span>
+          </button>
+        </section>
+        <div class="toolbar">
+          <div class="actions">
+            <button data-action="home" aria-label="Home" title="Home" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9" /></svg
+              ><span class="button-label">Home</span>
+            </button>
+            <button
+              data-action="left"
+              aria-label="Rotate left"
+              title="Rotate left"
+              disabled
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 4v6h6M3 10a9 9 0 1 1 1 8" /></svg
+              ><span class="button-label">Rotate left</span>
+            </button>
+            <button
+              data-action="right"
+              aria-label="Rotate right"
+              title="Rotate right"
+              disabled
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 4v6h-6m6 0a9 9 0 1 0-1 8" /></svg
+              ><span class="button-label">Rotate right</span>
+            </button>
+          </div>
+          <button id="fullscreen" aria-label="Full screen" title="Full screen">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 3H3v6m12-6h6v6M3 15v6h6m6 0h6v-6" /></svg
+            ><span class="button-label">Full screen</span>
+          </button>
+        </div>
+        <div id="hinge" hidden>
+          <button
+            data-action="closed"
+            aria-label="Fold closed"
+            title="Fold closed"
+            disabled
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="8" y="3" width="8" height="18" rx="2" />
+              <path d="M11 3v18" /></svg
+            ><span class="button-label">Closed</span>
+          </button>
+          <button
+            data-action="partial"
+            aria-label="Half open"
+            title="Half open"
+            disabled
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m12 3-8 4v13l8-4 8 4V7l-8-4Zm0 0v13" /></svg
+            ><span class="button-label">Half open</span>
+          </button>
+          <button
+            data-action="open"
+            aria-label="Fold open"
+            title="Fold open"
+            disabled
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M12 4v16" /></svg
+            ><span class="button-label">Open</span>
+          </button>
+        </div>
+        <div class="metrics" aria-label="Connection statistics">
+          <span><b id="fps">—</b> fps</span
+          ><span><b id="bandwidth">—</b> Mbps</span
+          ><span><b id="latency">—</b> ms RTT</span><span id="route">—</span
+          ><span id="resolution">—</span>
+        </div>
+        <p id="notice" role="status" aria-live="polite"></p>
+        <button id="reconnect" class="text-button" hidden>Reconnect now</button>
+      </div>
+    </main>
+  </body>
+</html>

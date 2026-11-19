@@ -1,0 +1,14 @@
+node_modules/
+dist/
+native/.build/
+native/.swiftpm/
+.env
+.env.*
+!.env.example
+.artifacts/
+*.log
+.DS_Store
+
+.preview/
+
+example-build/
